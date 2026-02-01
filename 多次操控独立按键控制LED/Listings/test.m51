@@ -1,0 +1,200 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    12/30/2025  15:24:06  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\Delay.obj, .\Objects\Key.obj TO .\Objects\test PRINT (.\Listin
+>> gs\test.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  .\Objects\Delay.obj (DELAY)
+  .\Objects\Key.obj (KEY)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\test (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?MAIN
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+                    000EH     07F2H                  *** GAP ***
+            CODE    0800H     003DH     UNIT         ?PR?KEY?KEY
+            CODE    083DH     0015H     UNIT         ?PR?MAIN?MAIN
+            CODE    0852H     0015H     UNIT         ?PR?_DELAY?DELAY
+            CODE    0867H     0010H     UNIT         ?PR?INIT_T0?MAIN
+            CODE    0877H     000FH     UNIT         ?PR?DELAY?KEY
+            CODE    0886H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0892H     0004H     UNIT         ?PR?ISR_T0?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\test (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN
+  +--> ?PR?INIT_T0?MAIN
+  +--> ?PR?KEY?KEY
+
+?PR?KEY?KEY
+  +--> ?PR?DELAY?KEY
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/30/2025  15:24:06  PAGE 2
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\test (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  B:00A8H.7       PUBLIC        EA
+  C:0892H         PUBLIC        Isr_T0
+  B:00B0H.4       PUBLIC        P3_4
+  D:0008H         PUBLIC        keynum
+  C:083DH         PUBLIC        main
+  D:0009H         PUBLIC        count
+  D:0089H         PUBLIC        TMOD
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:0867H         PUBLIC        Init_T0
+  -------         PROC          INIT_T0
+  C:0867H         LINE#         7
+  C:0867H         LINE#         8
+  C:0867H         LINE#         9
+  C:086AH         LINE#         10
+  C:086DH         LINE#         11
+  C:0870H         LINE#         12
+  C:0872H         LINE#         13
+  C:0874H         LINE#         14
+  C:0876H         LINE#         15
+  -------         ENDPROC       INIT_T0
+  -------         PROC          ISR_T0
+  C:0892H         LINE#         17
+  C:0892H         LINE#         19
+  C:0895H         LINE#         20
+  -------         ENDPROC       ISR_T0
+  -------         PROC          MAIN
+  C:083DH         LINE#         22
+  C:083DH         LINE#         23
+  C:083DH         LINE#         24
+  C:0840H         LINE#         25
+  C:0843H         LINE#         26
+  C:0843H         LINE#         27
+  C:0843H         LINE#         28
+  C:0848H         LINE#         29
+  C:084CH         LINE#         30
+  C:084CH         LINE#         31
+  C:084EH         LINE#         32
+  C:0850H         LINE#         33
+  C:0850H         LINE#         34
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0852H         PUBLIC        _Delay
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/30/2025  15:24:06  PAGE 3
+
+
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        xms
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0852H         LINE#         2
+  C:0852H         LINE#         3
+  C:0852H         LINE#         5
+  C:085CH         LINE#         6
+  C:085CH         LINE#         7
+  C:085EH         LINE#         8
+  C:0860H         LINE#         10
+  C:0860H         LINE#         11
+  C:0862H         LINE#         12
+  C:0864H         LINE#         13
+  C:0866H         LINE#         14
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        DELAY
+
+  -------         MODULE        KEY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0877H         PUBLIC        delay
+  B:00B0H.0       PUBLIC        P3_0
+  B:00B0H.1       PUBLIC        P3_1
+  B:00B0H.2       PUBLIC        P3_2
+  B:00B0H.3       PUBLIC        P3_3
+  C:0800H         PUBLIC        Key
+  -------         PROC          DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  D:0005H         SYMBOL        k
+  -------         ENDDO         
+  C:0877H         LINE#         3
+  C:0877H         LINE#         4
+  C:0877H         LINE#         7
+  C:0878H         LINE#         8
+  C:0879H         LINE#         9
+  C:087BH         LINE#         10
+  C:087DH         LINE#         11
+  C:087FH         LINE#         13
+  C:087FH         LINE#         15
+  C:087FH         LINE#         16
+  C:0881H         LINE#         17
+  C:0883H         LINE#         18
+  C:0885H         LINE#         19
+  -------         ENDPROC       DELAY
+  -------         PROC          KEY
+  -------         DO            
+  D:0004H         SYMBOL        Keynum
+  -------         ENDDO         
+  C:0800H         LINE#         21
+  C:0800H         LINE#         22
+  C:0800H         LINE#         23
+  C:0802H         LINE#         24
+  C:0810H         LINE#         25
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  12/30/2025  15:24:06  PAGE 4
+
+
+  C:081EH         LINE#         26
+  C:082CH         LINE#         27
+  C:083AH         LINE#         28
+  C:083CH         LINE#         29
+  -------         ENDPROC       KEY
+  -------         ENDMOD        KEY
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?DELAY
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 008DH BYTE ( 6%) *
+******************************************************************************
+
+Program Size: data=11.0 xdata=0 code=156
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
