@@ -1,0 +1,197 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              02/10/2026 00:01:44 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Nixie.h"
+   3          unsigned char ms;
+   4          unsigned char s;
+   5          unsigned char min;
+   6          unsigned char count;
+   7          unsigned char count1;
+   8          unsigned char Key1,Key2;
+   9          unsigned char countkey;
+  10          unsigned char Keyread;
+  11          
+  12          unsigned char Keynum()
+  13          {
+  14   1        unsigned char Keynum=0;
+  15   1        if(P3_1==0){Keynum=1;}
+  16   1        if(P3_0==0){Keynum=2;}
+  17   1        if(P3_2==0){Keynum=3;}
+  18   1        if(P3_3==0){Keynum=4;}
+  19   1         return Keynum;
+  20   1      }
+  21          
+  22          void Timer0Init(void)   //100微秒@11.0592MHz
+  23          {
+  24   1        TMOD &= 0xF0;   //设置定时器模式
+  25   1        TMOD |= 0x01;   //设置定时器模式
+  26   1        TL0 = 0xA4;   //设置定时初值
+  27   1        TH0 = 0xFF;   //设置定时初值
+  28   1        TF0 = 0;    //清除TF0标志
+  29   1        TR0 = 1;    //定时器0开始计时
+  30   1        EA=1;
+  31   1        PT0=1;
+  32   1        ET0=1;
+  33   1      }
+  34          void Timer1Init(void)   //100微秒@11.0592MHz
+  35          {
+  36   1        TMOD &= 0x0F;   //设置定时器模式
+  37   1        TMOD |= 0x10;   //设置定时器模式
+  38   1        TL1 = 0xA4;   //设置定时初值
+  39   1        TH1 = 0xFF;   //设置定时初值
+  40   1        TF1 = 0;    //清除TF1标志
+  41   1        TR1 = 1;    //定时器1开始计时
+  42   1        EA=1;
+  43   1        PT1=0;
+  44   1        ET1=1;
+  45   1      }
+  46          
+  47          
+  48          void Timer1_calculate() interrupt 3
+  49          {
+  50   1        TF1 = 0;
+  51   1        TL1 = 0xA4;   
+  52   1        TH1 = 0xFF;   
+  53   1        if(count1==10)
+  54   1        {
+C51 COMPILER V9.60.7.0   MAIN                                                              02/10/2026 00:01:44 PAGE 2   
+
+  55   2              ms++;
+  56   2             count1=0;
+  57   2            if(ms==1000)
+  58   2            {
+  59   3              s++;
+  60   3              ms=0;
+  61   3            }
+  62   2            if(s==60)
+  63   2            {
+  64   3              min++;
+  65   3              s=0;
+  66   3            }
+  67   2            if(min==100)
+  68   2            {
+  69   3              min=0;
+  70   3            }
+  71   2        }
+  72   1        else 
+  73   1          count1++;
+  74   1      }
+  75          
+  76          
+  77          void Nixie_Loop() interrupt 1
+  78          {
+  79   1        TF0=0;
+  80   1        TL0 = 0xA4;   //设置定时初值
+  81   1        TH0 = 0xFF;   //设置定时初值
+  82   1        if(countkey==20)
+  83   1        {
+  84   2          countkey=0;
+  85   2          Key1=Key2;
+  86   2          Key2=Keynum();
+  87   2          if(Key1==1&&Key2==0)
+  88   2            Keyread=1;
+  89   2          else if(Key1==2&&Key2==0)
+  90   2            Keyread=2;
+  91   2          else if(Key1==3&&Key2==0)
+  92   2            Keyread=3;
+  93   2          else if(Key1==4&&Key2==0)
+  94   2            Keyread=4;
+  95   2        }
+  96   1        else
+  97   1          countkey++;
+  98   1        
+  99   1        if(count==20)//定2ms
+ 100   1        {
+ 101   2           Nixie(1,min/10);
+ 102   2           count++;
+ 103   2        }
+ 104   1        else if(count==40)//定2ms
+ 105   1        {
+ 106   2           Nixie(2,min%10);
+ 107   2          count++;
+ 108   2        }
+ 109   1        else if(count==60)//定2ms
+ 110   1        {
+ 111   2           Nixie_a(3);
+ 112   2          count++;
+ 113   2        }
+ 114   1          else if(count==80)//定2ms
+ 115   1        {
+ 116   2           Nixie(4,s/10);
+C51 COMPILER V9.60.7.0   MAIN                                                              02/10/2026 00:01:44 PAGE 3   
+
+ 117   2          count++;
+ 118   2        }
+ 119   1          else if(count==100)//定2ms
+ 120   1        {
+ 121   2           Nixie(5,s%10);
+ 122   2          count++;
+ 123   2        }
+ 124   1          else if(count==120)//定2ms
+ 125   1        {
+ 126   2           Nixie_a(6);
+ 127   2          count++;
+ 128   2        }
+ 129   1          else if(count==140)//定2ms
+ 130   1        {
+ 131   2           Nixie(7,ms%100-(ms/10)%10);
+ 132   2          count++;
+ 133   2        }
+ 134   1          else if(count==160)//定2ms
+ 135   1        {
+ 136   2           Nixie(8,(ms/10)%10);
+ 137   2           count=1;
+ 138   2        }
+ 139   1        else
+ 140   1          count++;
+ 141   1      }
+ 142          
+ 143          
+ 144          void allInit()
+ 145          {
+ 146   1        countkey=1;
+ 147   1        count=1;
+ 148   1        count1=0;
+ 149   1        Timer0Init();
+ 150   1        Timer1Init();
+ 151   1        ms=0;
+ 152   1        s=0;
+ 153   1        min=0;
+ 154   1        Key1=0;
+ 155   1        Key2=0;
+ 156   1        Keyread=0;
+ 157   1      }
+ 158          
+ 159          
+ 160          void main()
+ 161          {
+ 162   1        allInit();
+ 163   1        while(1)
+ 164   1        {
+ 165   2              
+ 166   2        }
+ 167   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    484    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.60.7.0   MAIN                                                              02/10/2026 00:01:44 PAGE 4   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
