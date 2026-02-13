@@ -1,0 +1,133 @@
+C51 COMPILER V9.60.7.0   MUSIC                                                             01/29/2026 00:12:23 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MUSIC
+OBJECT MODULE PLACED IN .\Objects\music.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE music.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\mus
+                    -ic.lst) TABS(2) OBJECT(.\Objects\music.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          unsigned int FrquSelect   = 0;
+   3          unsigned int MusicSelect  = 0;
+   4          //要调用函数Delay
+   5          //unsigned int code FrquTable[]  = {0, 63778, // 晶振11.0592
+   6          
+   7          //  //各音阶装入定时器的值
+   8          //  //上面define是为了给各音阶排序 使其可以在数组中对应计时器重装值
+   9          //  //这个是必备的初始化数组
+  10          //  
+  11          //                             63873,
+  12          //                             63968,
+  13          //                             64054,
+  14          //                             64140,
+  15          //                             64215,
+  16          //                             64291,
+  17          //                             64360,
+  18          //                             64425,
+  19          //                             64489,
+  20          //                             64547,
+  21          //                             64607,
+  22          //                             64655,
+  23          //                             64704,
+  24          //                             64751,
+  25          //                             64795,
+  26          //                             64837,
+  27          //                             64876,
+  28          //                             64913,
+  29          //                             64948,
+  30          //                             64981,
+  31          //                             65013,
+  32          //                             65042,
+  33          //                             65070,
+  34          //                             65095,
+  35          //                             65120,
+  36          //                             65143,
+  37          //                             65166,
+  38          //                             65187,
+  39          //                             65206,
+  40          //                             65224,
+  41          //                             65242,
+  42          //                             65259,
+  43          //                             65274,
+  44          //                             65289,
+  45          //                             65303};
+  46          void Timer0_Init()
+  47          {
+  48   1          TMOD &= 0xf0;
+  49   1          TMOD |= 0x01;
+  50   1          EA  = 1;
+  51   1          TR0 = 1;
+  52   1          TH0 = (unsigned int)(65536 - 1000 / 12 * 11.0592) / 256;
+  53   1          TL0 = (unsigned int)(65536 - 1000 / 12 * 11.0592) % 256;
+  54   1          ET0 = 1;
+C51 COMPILER V9.60.7.0   MUSIC                                                             01/29/2026 00:12:23 PAGE 2   
+
+  55   1          PT0 = 0;
+  56   1      }
+  57          
+  58          // void Timer0_Routint() interrupt 1
+  59          // {
+  60          //     static unsigned int T0count;
+  61          //     TH0 = (unsigned int)(65536 - 1000 / 12 * 11.0592) / 256;
+  62          //     TL0 = (unsigned int)(65536 - 1000 / 12 * 11.0592) % 256;
+  63          //     T0count++;
+  64          //     if (T0count == 1000) 
+  65          //    {
+  66          //         P2_5    = ~P2_5;
+  67          //         T0count = 0;
+  68          //     }
+  69          // }模板
+  70          
+  71          void Timer0_Routint() interrupt 1
+  72          {
+  73   1          static unsigned int T0count;
+  74   1          if (FrquTable[FrquSelect])
+*** ERROR C202 IN LINE 74 OF music.c: 'FrquTable': undefined identifier
+  75   1          {
+  76   2              TL0 = FrquTable[FrquSelect] % 256;
+*** ERROR C202 IN LINE 76 OF music.c: 'FrquTable': undefined identifier
+  77   2              TH0 = FrquTable[FrquSelect] / 256; 
+*** ERROR C202 IN LINE 77 OF music.c: 'FrquTable': undefined identifier
+  78   2              T0count++;
+  79   2          }
+  80   1          if (T0count == 1000) 
+  81   1          {
+  82   2              Buzzer = !Buzzer;
+*** ERROR C202 IN LINE 82 OF music.c: 'Buzzer': undefined identifier
+  83   2              T0count=0;
+  84   2          }
+  85   1      }//控制中断
+  86              
+  87          //int main()
+  88          //{
+  89          //    Timer0_Init();
+  90          //    while (1)     {
+  91          //        if (music[MusicSelect] != 0xff)
+  92          //        {
+  93          //            FrquSelect = music[MusicSelect];
+  94          //            MusicSelect++;
+  95          //            TR0=1;
+  96          //            //正式开始发音
+  97          //            Delay1ms(Speed / 4 * music[MusicSelect]);
+  98          //            TR0=0;
+  99          //            MusicSelect++;
+ 100          //            Delay(5);
+ 101          //        } 
+ 102          //        else
+ 103          //        {
+ 104          //            Delay(5000); // 5秒后重新播放
+ 105          //            MusicSelect = 0;
+ 106          //        }
+ 107          //    }
+ 108          //    return 0;
+ 109          //}参考模板
+ 110          
+ 111          //unsigned int code music[]  此数组与音乐的旋律有关 数组形式 第一个为音阶第二个为节拍时间
+ 112          
+C51 COMPILER V9.60.7.0   MUSIC                                                             01/29/2026 00:12:23 PAGE 3   
+
+ 113          //需要定义的全局变量
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  4 ERROR(S)
