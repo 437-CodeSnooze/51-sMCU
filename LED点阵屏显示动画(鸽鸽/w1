@@ -1,0 +1,6 @@
+#ifndef _MatrixLED_H__
+#define _MatrixLED_H__
+void MartrixLED_ShowColumn(unsigned char col,unsigned char Data);
+void MatrixLED_Init();
+
+#endif
